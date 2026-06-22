@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Sistem Peer Checking FRP JPA</title>
+  <meta name="description" content="Sistem Peer Checking FRP Jabatan Pengajian Am, Politeknik Port Dickson" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow">Unit Jaminan Kualiti Jabatan Pengajian Am</div>
+          <h1>Sistem <span>Peer Checking</span> FRP</h1>
+          <p>
+            Borang digital semakan FRP untuk merekod maklumat semakan, menilai kualiti bukti,
+            mencatat tindakan pembetulan dan membantu pemantauan Unit Kualiti JPA.
+          </p>
+          <div id="connectionStatus" class="connection-status">Mode: GitHub front-end</div>
+        </div>
+
+        <div class="logo-mark image-logo">
+          <img src="assets/jpa-logo.png" alt="Logo Jabatan Pengajian Am" />
+        </div>
+      </div>
+    </header>
+
+    <nav class="top-nav" aria-label="Navigasi borang">
+      <a href="#maklumat">Bahagian A</a>
+      <a href="#senarai">Bahagian B</a>
+      <a href="#kualiti">Bahagian C</a>
+      <a href="#status">Bahagian D</a>
+      <a href="#perakuan">Perakuan</a>
+      <a href="#hantar">Hantar</a>
+    </nav>
+
+    <main class="main">
+      <section class="quick-panel" aria-label="Panel ringkas sistem">
+        <div class="notice">
+          <strong>BORANG LAPORAN SEMAKAN FRP</strong><br />
+          <strong>SESI II 2025/2026</strong><br />
+          Jabatan Pengajian Am, Politeknik Port Dickson.
+          <br /><br />
+          Sila lengkapkan semua bahagian. Sistem akan mencadangkan status berdasarkan
+          jawapan senarai semak dan kualiti bukti. Rekod akan dihantar ke Google Sheet
+          Unit Kualiti melalui Apps Script Web App.
+        </div>
+
+        <div class="mini-dashboard" aria-label="Ringkasan status borang">
+          <div class="stat">
+            <div class="num" id="answeredCount">0/10</div>
+            <div class="label">Item dijawab</div>
+            <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+          </div>
+
+          <div class="stat">
+            <div class="num" id="suggestedBadge">-</div>
+            <div class="label">Cadangan status</div>
+          </div>
+
+          <div class="stat">
+            <div class="num" id="issueCount">0</div>
+            <div class="label">Isu dikesan</div>
+          </div>
+
+          <div class="stat">
+            <div class="num" id="todayDate">-</div>
+            <div class="label">Tarikh hari ini</div>
+          </div>
+        </div>
+      </section>
+
+      <form id="peerCheckingForm">
+        <section class="card" id="maklumat">
+          <div class="section-title">
+            Bahagian A : Maklumat FRP
+            <span class="section-subtitle">Maklumat asas semakan</span>
+          </div>
+
+          <div class="card-body">
+            <div class="grid-2">
+              <div class="field">
+                <label for="namaPemilik">Nama Pemilik FRP <span class="required">*</span></label>
+                <input type="text" id="namaPemilik" name="namaPemilik" placeholder="Nama Pemilik FRP" required />
+              </div>
+
+              <div class="field">
+                <label for="namaPenyemak">Nama Penyemak <span class="required">*</span></label>
+                <input type="text" id="namaPenyemak" name="namaPenyemak" placeholder="Nama Penyemak" required />
+              </div>
+
+              <div class="field">
+                <label for="tarikhSemakan">Tarikh Semakan <span class="required">*</span></label>
+                <input type="date" id="tarikhSemakan" name="tarikhSemakan" required />
+              </div>
+
+              <div class="field">
+                <label for="unit">Unit <span class="required">*</span></label>
+                <select id="unit" name="unit" required>
+                  <option value="">Pilih Unit</option>
+                  <option value="Unit Bahasa Inggeris">Unit Bahasa Inggeris</option>
+                  <option value="Unit Pendidikan Islam">Unit Pendidikan Islam</option>
+                  <option value="Jabatan Pengajian Am">Jabatan Pengajian Am</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="emailFRP">Email FRP Pegawai <span class="required">*</span></label>
+                <input type="email" id="emailFRP" name="emailFRP" placeholder="contoh: nama@polipd.edu.my" required />
+              </div>
+
+              <div class="field">
+                <label for="pautanFolderFRP">Pautan Folder FRP <span class="required">*</span></label>
+                <input type="url" id="pautanFolderFRP" name="pautanFolderFRP" placeholder="Pautan Google Drive folder FRP" required />
+                <div class="hint">Pastikan pautan boleh diakses oleh penyemak dan Unit Kualiti JPA.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" id="senarai">
+          <div class="section-title">
+            Bahagian B : Senarai Semak FRP
+            <span class="section-subtitle">Dokumen wajib semakan</span>
+          </div>
+
+          <div class="card-body">
+            <div class="check-item">
+              <div class="check-title">1. Folder disediakan mengikut senarai semak FRP</div>
+              <div class="radio-group">
+                <label class="radio-pill"><input type="radio" name="folderDisediakan" value="Ya" required /><span>Ya</span></label>
+                <label class="radio-pill"><input type="radio" name="folderDisediakan" value="Tidak" /><span>Tidak</span></label>
+                <label class="radio-pill"><input type="radio" name="folderDisediakan" value="Tidak Berkaitan" /><span>Tidak Berkaitan</span></label>
+              </div>
+            </div>
+
+            <div class="check-item">
+              <div class="check-title">2. Jadual waktu telah dimuat naik</div>
+              <div class="radio-group">
+                <label class="radio-pill"><input type="radio" name="jadualWaktu" value="Ya" required /><span>Ya</span></label>
+                <label class="radio-pill"><input type="radio" name="jadualWaktu" value="Tidak" /><span>Tidak</span></label>
+                <label class="radio-pill"><input type="radio" name="jadualWaktu" value="Tidak Berkaitan" /><span>Tidak Berkaitan</span></label>
+              </div>
+            </div>
+
+            <div class="check-item">
+              <div class="check-title">
+                3. Borang semakan FRP telah diisi dan dimuat naik
+                <small>(semakan 1 dan semakan 2)</small>
+              </div>
+              <div class="radio-group">
+                <label class="radio-pill"><input type="radio" name="borangSemakanFRP" value="Ya" required /><span>Ya</span></label>
+                <label class="radio-pill"><input type="radio" name="borangSemakanFRP" value="Tidak" /><span>Tidak</span></label>
+                <label class="radio-pill"><input type="radio" name="borangSemakanFRP" value="Tidak Berkaitan" /><span>Tidak Berkaitan</span></label>
+              </div>
+            </div>
+
+            <div class="check-item">
+              <div class="check-title">
+                4. Dokumen ketidakhadiran pelajar dimuat naik
+                <small>(jika berkaitan)</small>
+              </div>
+              <div class="radio-group">
+                <label class="radio-pill"><input type="radio" name="dokumenKetidakhadiran" value="Ya" required /><span>Ya</span></label>
+                <label class="radio-pill"><input type="radio" name="dokumenKetidakhadiran" value="Tidak" /><span>Tidak</span></label>
+                <label class="radio-pill"><input type="radio" name="dokumenKetidakhadiran" value="Tidak Berkaitan" /><span>Tidak Berkaitan</span></label>
+              </div>
+            </div>
+
+            <div class="check-item">
+              <div class="check-title">5. Sampel item pentaksiran PB semua kelas telah dimuat naik</div>
+              <div class="radio-group">
+                <label class="radio-pill"><input type="radio" name="sampelItemPB" value="Ya" required /><span>Ya</span></label>
+                <label class="radio-pill"><input type="radio" name="sampelItemPB" value="Tidak" /><span>Tidak</span></label>
+                <label class="radio-pill"><input type="radio" name="sampelItemPB" value="Tidak Berkaitan" /><span>Tidak Berkaitan</span></label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" id="kualiti">
+          <div class="section-title">
+            Bahagian C : Kualiti Bukti
+            <span class="section-subtitle">Menentukan kesediaan audit</span>
+          </div>
+
+          <div class="card-body">
+            <div class="check-item">
+              <div class="check-title">1. Pautan bukti / folder FRP boleh diakses</div>
+              <div class="radio-group">
+                <label class="radio-pill"><input type="radio" name="aksesBukti" value="Ya" required /><span>Ya</span></label>
+                <label class="radio-pill"><input type="radio" name="aksesBukti" value="Tidak" /><span>Tidak</span></label>
+                <label class="radio-pill"><input type="radio" name="aksesBukti" value="Tidak Berkaitan" /><span>Tidak Berkaitan</span></label>
+              </div>
+            </div>
+
+            <div class="check-item">
+              <div class="check-title">2. Dokumen disusun mengikut senarai semak</div>
+              <div class="radio-group">
+                <label class="radio-pill"><input type="radio" name="susunanDokumen" value="Ya" required /><span>Ya</span></label>
+                <label class="radio-pill"><input type="radio" name="susunanDokumen" value="Tidak" /><span>Tidak</span></label>
+                <label class="radio-pill"><input type="radio" name="susunanDokumen" value="Tidak Berkaitan" /><span>Tidak Berkaitan</span></label>
+              </div>
+            </div>
+
+            <div class="check-item">
+              <div class="check-title">3. Nama fail mudah dikenal pasti</div>
+              <div class="radio-group">
+                <label class="radio-pill"><input type="radio" name="namaFailJelas" value="Ya" required /><span>Ya</span></label>
+                <label class="radio-pill"><input type="radio" name="namaFailJelas" value="Tidak" /><span>Tidak</span></label>
+                <label class="radio-pill"><input type="radio" name="namaFailJelas" value="Tidak Berkaitan" /><span>Tidak Berkaitan</span></label>
+              </div>
+            </div>
+
+            <div class="check-item">
+              <div class="check-title">4. Bukti mencukupi untuk tujuan audit</div>
+              <div class="radio-group">
+                <label class="radio-pill"><input type="radio" name="buktiMencukupi" value="Ya" required /><span>Ya</span></label>
+                <label class="radio-pill"><input type="radio" name="buktiMencukupi" value="Tidak" /><span>Tidak</span></label>
+                <label class="radio-pill"><input type="radio" name="buktiMencukupi" value="Tidak Berkaitan" /><span>Tidak Berkaitan</span></label>
+              </div>
+            </div>
+
+            <div class="check-item">
+              <div class="check-title">5. Tindakan pembetulan diperlukan</div>
+              <div class="radio-group">
+                <label class="radio-pill"><input type="radio" name="pembetulanDiperlukan" value="Tidak" required /><span>Tidak</span></label>
+                <label class="radio-pill"><input type="radio" name="pembetulanDiperlukan" value="Ya" /><span>Ya</span></label>
+              </div>
+            </div>
+
+            <div id="autoSuggestion" class="auto-suggestion"></div>
+          </div>
+        </section>
+
+        <section class="card" id="status">
+          <div class="section-title">
+            Bahagian D : Status Semakan & Tindakan
+            <span class="section-subtitle">Keputusan akhir penyemak</span>
+          </div>
+
+          <div class="card-body">
+            <div class="grid-2">
+              <div class="field">
+                <label for="statusFRP">Status FRP Pegawai <span class="required">*</span></label>
+                <select id="statusFRP" name="statusFRP" required>
+                  <option value="">Pilih Status FRP Pegawai</option>
+                  <option value="Lengkap">Lengkap</option>
+                  <option value="Perlu Tindakan">Perlu Tindakan</option>
+                  <option value="Tidak Lengkap">Tidak Lengkap</option>
+                </select>
+                <div id="statusPreview" class="status-box"></div>
+              </div>
+
+              <div class="field">
+                <label for="statusTindakan">Status Tindakan Susulan</label>
+                <select id="statusTindakan" name="statusTindakan">
+                  <option value="Tiada Tindakan">Tiada Tindakan</option>
+                  <option value="Menunggu Pembetulan">Menunggu Pembetulan</option>
+                  <option value="Dalam Tindakan">Dalam Tindakan</option>
+                  <option value="Selesai">Selesai</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="action-panel">
+              <div class="grid-2">
+                <div class="field">
+                  <label for="tindakanDiperlukan">Tindakan Diperlukan</label>
+                  <textarea id="tindakanDiperlukan" name="tindakanDiperlukan" placeholder="Nyatakan tindakan pembetulan yang perlu dibuat, jika ada."></textarea>
+                </div>
+
+                <div class="field">
+                  <label for="tarikhSasaran">Tarikh Sasaran Pembetulan</label>
+                  <input type="date" id="tarikhSasaran" name="tarikhSasaran" />
+                  <div class="hint">Isi jika status ialah Perlu Tindakan atau Tidak Lengkap.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="ulasan">Ulasan / Cadangan Penambahbaikan <span class="required">*</span></label>
+              <textarea id="ulasan" name="ulasan" placeholder="Nyatakan ulasan atau cadangan penambahbaikan untuk rekod Unit Kualiti JPA." required></textarea>
+            </div>
+
+            <div class="field">
+              <label for="catatanUnitKualiti">Catatan Tambahan Unit Kualiti</label>
+              <textarea id="catatanUnitKualiti" name="catatanUnitKualiti" placeholder="Ruangan tambahan untuk rujukan Unit Kualiti JPA."></textarea>
+            </div>
+          </div>
+        </section>
+
+        <section class="grid-2" id="perakuan" style="margin-top: 26px;">
+          <div class="card" style="margin-top: 0;">
+            <div class="section-title">Perakuan</div>
+            <div class="card-body">
+              <label class="declaration">
+                <input type="checkbox" id="perakuanSetuju" name="perakuanSetuju" value="Setuju" required />
+                <span>
+                  Dengan ini saya mengesahkan bahawa telah membuat semakan terhadap FRP pegawai ini
+                  dan apa yang telah direkodkan adalah <strong>BENAR.</strong>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 0;">
+            <div class="section-title">Pengesahan</div>
+            <div class="card-body">
+              <div class="approval-box">
+                <div class="approval-signature">
+                  <img src="assets/nor-khayati-signature.png" alt="Tandatangan Penyelaras Kualiti Jabatan" />
+                </div>
+                <div class="approval-name">(NOR KHAYATI BINTI BASIR)</div>
+                <div class="approval-role">Penyelaras Kualiti Jabatan</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="submit-card" id="hantar">
+          <div class="button-row">
+            <button type="submit" class="primary-button" id="submitBtn">Hantar Semakan</button>
+            <button type="button" class="secondary-button" id="saveDraftBtn">Simpan Draf</button>
+            <button type="button" class="secondary-button" id="clearDraftBtn">Padam Draf</button>
+            <button type="button" class="secondary-button" onclick="window.print()">Cetak / PDF</button>
+          </div>
+
+          <div class="print-note">
+            Sistem ini menghantar rekod ke Google Sheet Unit Kualiti melalui Apps Script Web App.
+          </div>
+
+          <div id="successMessage" class="message success"></div>
+          <div id="errorMessage" class="message error">
+            Maaf, borang tidak berjaya dihantar. Sila cuba semula atau hubungi Unit Kualiti JPA.
+          </div>
+        </section>
+      </form>
+    </main>
+
+    <footer class="footer">
+      Disediakan oleh : Unit Jaminan Kualiti Jabatan Pengajian Am_2026
+    </footer>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

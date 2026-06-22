@@ -8,7 +8,7 @@
 // Example:
 // https://yourname.github.io/frp-peer-checking/?endpoint=https%3A%2F%2Fscript.google.com%2Fmacros%2Fs%2FAKfycbxxx%2Fexec
 
-const DEFAULT_WEB_APP_URL = "";
+const DEFAULT_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxfOuqvYLE5QGx-e___P0TNqGqqseQUeaEOQkF3NhS59zLLkrwERK2nuQH_biLijiVl/exec";
 
 const form = document.getElementById("peerCheckingForm");
 const statusFRP = document.getElementById("statusFRP");
